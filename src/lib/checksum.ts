@@ -10,7 +10,7 @@ import { RegistrationPlate } from "../types";
  * @returns boolean indicating if the plate is valid
  */
 const isValidRegistrationPlate = (plate: string): boolean => {
-  const pattern = /^[A-Z]{1,3}\s\d{1,4}$/;
+  const pattern = /^[A-Z]{1,3}\s?\d{1,4}$/;
   return pattern.test(plate.trim().toUpperCase());
 };
 
@@ -30,10 +30,13 @@ export const calculateChecksum = (
     throw new Error(`Invalid registration plate format: ${registrationPlate}`);
   }
 
-  // Split the registration plate into prefix and numbers
-  const parts = registrationPlate.trim().toUpperCase().split(" ");
-  const prefix = parts[0];
-  const numbers = parts[1].padStart(4, "0");
+  // Normalize the registration plate by removing any whitespace
+  const normalized = registrationPlate.trim().toUpperCase().replace(/\s+/g, "");
+
+  // Split into prefix and numbers based on the first digit found
+  const prefixEndIndex = normalized.search(/\d/);
+  const prefix = normalized.slice(0, prefixEndIndex);
+  const numbers = normalized.slice(prefixEndIndex).padStart(4, "0");
 
   // Get the relevant prefix numbers based on prefix length
   const prefixNumbers: [number, number] = (() => {
