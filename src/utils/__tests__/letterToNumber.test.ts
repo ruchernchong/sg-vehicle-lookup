@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { letterToNumber } from "../src/utils/letterToNumber";
+import { letterToNumber } from "../letterToNumber";
 
 describe("letterToNumber", () => {
   it("converts uppercase letters correctly", () => {

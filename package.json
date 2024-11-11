@@ -4,15 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "sst dev",
+    "dev": "sst dev --stage dev",
     "test": "vitest --coverage"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hono/zod-validator": "^0.4.1",
     "hono": "^4.6.9",
-    "sst": "3.3.18"
+    "sst": "3.3.18",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20241106.0",
