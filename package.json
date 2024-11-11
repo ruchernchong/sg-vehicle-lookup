@@ -1,0 +1,21 @@
+{
+  "name": "sg-carplate-checksum",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "sst dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "hono": "^4.6.9",
+    "sst": "3.3.18"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20241106.0",
+    "prettier": "^3.3.3"
+  }
+}
