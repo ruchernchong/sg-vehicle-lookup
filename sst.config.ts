@@ -1,10 +1,11 @@
 /// <reference path="./.sst/platform/config.d.ts" />
+import { ENV } from "./src/config";
 
 export default $config({
   app(input) {
     return {
       name: "sg-carplate-checksum",
-      removal: input?.stage === "production" ? "retain" : "remove",
+      removal: input?.stage === ENV.PROD ? "retain" : "remove",
       home: "cloudflare",
     };
   },

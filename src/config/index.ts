@@ -1,3 +1,9 @@
+export enum ENV {
+  DEV = "dev",
+  STAGING = "staging",
+  PROD = "prod",
+}
+
 export const config = {
   api: {
     maxBatchSize: 100,
