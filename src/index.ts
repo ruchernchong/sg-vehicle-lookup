@@ -1,10 +1,10 @@
 import { Hono } from "hono";
-import { routes } from "./api/routes";
-import { errorHandler } from "./api/middleware/errorHandler";
+import { handle } from "hono/aws-lambda";
 import { logger } from "hono/logger";
 import { prettyJSON } from "hono/pretty-json";
 import { timing } from "hono/timing";
-import { handle } from "hono/aws-lambda";
+import { errorHandler } from "@/api/middleware/errorHandler";
+import { routes } from "@/api/routes";
 
 const app = new Hono();
 

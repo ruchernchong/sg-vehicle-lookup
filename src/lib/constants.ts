@@ -1,4 +1,4 @@
-import { ChecksumLetters, Multipliers } from "../types";
+import { ChecksumLetters, Multipliers } from "@/types";
 
 // Valid checksum letters in order (remainder 0-18)
 export const CHECKSUM_LETTERS: ChecksumLetters = [

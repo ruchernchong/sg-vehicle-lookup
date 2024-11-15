@@ -1,6 +1,6 @@
-import { letterToNumber } from "../utils/letterToNumber";
+import { letterToNumber } from "@/utils/letterToNumber";
 import { CHECKSUM_LETTERS, MULTIPLIERS } from "./constants";
-import { RegistrationPlate } from "../types";
+import { RegistrationPlate } from "@/types";
 
 /**
  * Validates if a registration plate string matches the expected format

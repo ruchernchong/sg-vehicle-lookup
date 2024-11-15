@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { lookup } from "../../lib/lookup";
 import { zValidator } from "@hono/zod-validator";
+import { lookup } from "@/lib/lookup";
 
 const lookupRoutes = new Hono();
 

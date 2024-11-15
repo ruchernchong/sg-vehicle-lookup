@@ -1,12 +1,9 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { plateSchema, batchPlateSchema } from "../schemas/checksum.schema";
-import {
-  formatChecksumResponse,
-  formatBatchResponse,
-} from "../../utils/responses";
-import type { RegistrationPlate } from "../../types";
-import { calculateChecksum } from "../../lib/checksum";
+import { formatChecksumResponse, formatBatchResponse } from "@/utils/responses";
+import type { RegistrationPlate } from "@/types";
+import { calculateChecksum } from "@/lib/checksum";
 
 const checksumRoutes = new Hono();
 

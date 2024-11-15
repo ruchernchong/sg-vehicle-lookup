@@ -1,4 +1,4 @@
-import { ChecksumResponse, BatchChecksumResponse } from "../types";
+import { ChecksumResponse, BatchChecksumResponse } from "@/types";
 
 export const formatChecksumResponse = (
   plate: string,
