@@ -12,6 +12,7 @@ checksumRoutes.get("/", zValidator("query", plateSchema), (c) => {
   const specialPlate = getSpecialPlateInfo(plate);
   if (specialPlate) {
     return c.json({
+      isSpecialPlate: true,
       plate,
       description: specialPlate.description,
       category: specialPlate.category,
@@ -24,7 +25,7 @@ checksumRoutes.get("/", zValidator("query", plateSchema), (c) => {
   const checksum = calculateChecksum(plate);
   const vehicleNo = plate + checksum;
 
-  return c.json({ plate, checksum, vehicleNo });
+  return c.json({ isSpecialPlate: false, plate, checksum, vehicleNo });
 });
 
 export { checksumRoutes };
