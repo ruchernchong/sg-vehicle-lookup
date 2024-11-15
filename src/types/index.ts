@@ -5,13 +5,29 @@ export type ChecksumLetters = readonly ChecksumLetter[];
 export type Multiplier = number;
 export type Multipliers = readonly Multiplier[];
 
-export interface ChecksumResponse {
-  plate: string;
-  checksum: string;
+export interface PlateDetail {
+  [key: string]: string;
 }
 
-export interface BatchChecksumResponse {
-  results: Array<
-    { plate: string; checksum: string } | { plate: string; error: string }
-  >;
+export interface PlateCategory {
+  prefixes: string[];
+  description: string;
+  details?: PlateDetail;
 }
+
+export interface PlatesConfig {
+  specialPlates: {
+    [key: string]: PlateCategory;
+  };
+}
+
+export interface SpecialPlate {
+  plate: string;
+  description: string;
+  category: string;
+  categoryDescription: string;
+}
+
+export type SpecialPlatesMap = {
+  [key: string]: SpecialPlate;
+};

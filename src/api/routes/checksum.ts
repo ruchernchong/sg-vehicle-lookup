@@ -1,35 +1,30 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { plateSchema, batchPlateSchema } from "../schemas/checksum.schema";
-import { formatChecksumResponse, formatBatchResponse } from "@/utils/responses";
-import type { RegistrationPlate } from "@/types";
+import { plateSchema } from "../schemas/checksum.schema";
 import { calculateChecksum } from "@/lib/checksum";
+import { getSpecialPlateInfo } from "@/utils/getSpecialPlateInfo";
 
 const checksumRoutes = new Hono();
 
 checksumRoutes.get("/", zValidator("query", plateSchema), (c) => {
   const { plate } = c.req.query();
-  const checksum = calculateChecksum(plate);
-  return c.json(formatChecksumResponse(plate, checksum));
-});
 
-checksumRoutes.post(
-  "/batch",
-  zValidator("json", batchPlateSchema),
-  async (c) => {
-    const { plates } = await c.req.json<{ plates: string[] }>();
-    const results = plates.map((plate) => {
-      try {
-        return {
-          plate,
-          checksum: calculateChecksum(plate as RegistrationPlate),
-        };
-      } catch (error) {
-        return { plate, error: (error as Error).message };
-      }
+  const specialPlate = getSpecialPlateInfo(plate);
+  if (specialPlate) {
+    return c.json({
+      plate,
+      description: specialPlate.description,
+      category: specialPlate.category,
+      checksum:
+        "Special registration numbers are excluded from checksum calculation",
+      vehicleNo: specialPlate.plate,
     });
-    return c.json(formatBatchResponse(results));
-  },
-);
+  }
+
+  const checksum = calculateChecksum(plate);
+  const vehicleNo = plate + checksum;
+
+  return c.json({ plate, checksum, vehicleNo });
+});
 
 export { checksumRoutes };
