@@ -8,6 +8,15 @@ const lookupRoutes = new Hono();
 const schema = z.object({ vehicleNo: z.string() });
 
 lookupRoutes.post("/:vehicleNo", zValidator("param", schema), async (c) => {
+  const hours = new Date().getHours();
+
+  if (hours >= 0 && hours < 6) {
+    return c.json({
+      message: "Service unavailable between 12 AM and 6 AM SGT.",
+      data: null,
+    });
+  }
+
   const { vehicleNo } = c.req.param();
 
   try {

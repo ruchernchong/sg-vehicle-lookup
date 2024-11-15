@@ -6,6 +6,8 @@ import { timing } from "hono/timing";
 import { errorHandler } from "@/api/middleware/errorHandler";
 import { routes } from "@/api/routes";
 
+process.env.TZ = "Asia/Singapore";
+
 const app = new Hono();
 
 app.use(logger());
