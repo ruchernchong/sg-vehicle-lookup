@@ -1,16 +1,18 @@
 import puppeteer, { Browser } from "puppeteer";
 import { Resource } from "sst";
+import TwoCaptcha from "@2captcha/captcha-solver";
+import { normaliseWhitespace } from "@/utils/normaliseWhitespace";
 
-const TwoCaptcha = require("@2captcha/captcha-solver");
 const solver = new TwoCaptcha.Solver(Resource.TwoCaptchaApiKey.value);
 
-const cleaned = (text) =>
-  text
-    .replace(/[\t\n]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-export const lookup = async (vehicleNo: string) => {
+/**
+ * Looks up vehicle information by plate number
+ *
+ * @param vehicleNumber - License plate number to look up
+ * @returns Vehicle information if found, undefined otherwise
+ * @throws Error if lookup fails after all retries
+ */
+export const lookup = async (vehicleNumber: string) => {
   let browser: Browser | null = null;
 
   try {
@@ -21,7 +23,7 @@ export const lookup = async (vehicleNo: string) => {
     const lookupUrl = Resource.LookupUrl.value;
     await page.goto(lookupUrl, { waitUntil: "networkidle0" });
 
-    await page.type("input[name='vehicleNo']", vehicleNo);
+    await page.type("input[name='vehicleNo']", vehicleNumber);
     await page.click("input[name='agreeTC']");
 
     // Solve reCAPTCHA
@@ -77,20 +79,22 @@ export const lookup = async (vehicleNo: string) => {
 
     await page.waitForSelector(".dt-payment-dtls");
 
-    const model = await page.$eval(
+    let model: string, expiryDate: string;
+    model = await page.$eval(
       ".dt-payment-dtls div.col-xs-5 div > p",
       (element) => element.textContent,
     );
-
-    const expiryDate = await page.$eval(
+    expiryDate = await page.$eval(
       "p.vrlDT-content-p",
       (element) => element.textContent,
     );
 
+    if (!model || !expiryDate) return;
+
     return {
-      vehicleNo,
-      model: cleaned(model),
-      expiryDate: cleaned(expiryDate),
+      vehicleNumber,
+      vehicleModel: normaliseWhitespace(model),
+      roadTaxExpiry: normaliseWhitespace(expiryDate),
     };
   } catch (e) {
     console.error("Error during lookup:", e);

@@ -23,13 +23,16 @@ lookupRoutes.post("/:vehicleNo", zValidator("param", schema), async (c) => {
     const result = await lookup(vehicleNo);
     console.log(result);
 
-    if (result) {
-      return c.json(result);
+    if (!result) {
+      return c.json({ message: "No vehicle info found." });
     }
 
-    return c.json({});
+    return c.json({
+      message: "Vehicle lookup is successful.",
+      data: result,
+    });
   } catch (e) {
-    throw new Error(e.message);
+    return c.json({ message: e.message }, 500);
   }
 });
 
