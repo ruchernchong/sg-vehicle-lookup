@@ -7,12 +7,18 @@ export {}
 import "sst"
 declare module "sst" {
   export interface Resource {
-  }
-}
-// cloudflare 
-import * as cloudflare from "@cloudflare/workers-types";
-declare module "sst" {
-  export interface Resource {
-    "Hono": cloudflare.Service
+    "Hono": {
+      "name": string
+      "type": "sst.aws.Function"
+      "url": string
+    }
+    "LookupUrl": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "TwoCaptchaApiKey": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
   }
 }

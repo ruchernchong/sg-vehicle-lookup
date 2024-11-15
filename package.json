@@ -1,5 +1,5 @@
 {
-  "name": "sg-carplate-checksum",
+  "name": "sg-vehicle-lookup",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,12 +8,15 @@
     "test": "vitest --coverage"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ru Chern Chong <hello@ruchern.dev>",
   "license": "ISC",
   "dependencies": {
+    "@2captcha/captcha-solver": "^1.3.0",
     "@hono/zod-validator": "^0.4.1",
     "hono": "^4.6.9",
+    "puppeteer": "^23.8.0",
     "sst": "3.3.18",
+    "typescript": "^5.6.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {

@@ -4,6 +4,7 @@ import { errorHandler } from "./api/middleware/errorHandler";
 import { logger } from "hono/logger";
 import { prettyJSON } from "hono/pretty-json";
 import { timing } from "hono/timing";
+import { handle } from "hono/aws-lambda";
 
 const app = new Hono();
 
@@ -15,4 +16,4 @@ app.onError(errorHandler);
 
 app.route("/", routes);
 
-export default app;
+export const handler = handle(app);
