@@ -17,9 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
     env:
-      CLOUDFLARE_API_TOKEN: ${{ vars.CLOUDFLARE_API_TOKEN }}
-      LOOKUP_URL: ${{ vars.LOOKUP_URL }}
-      TWO_CAPTCHA_API_KEY: ${{ vars.TWO_CAPTCHA_API_KEY }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      LOOKUP_URL: ${{ secrets.LOOKUP_URL }}
+      TWO_CAPTCHA_API_KEY: ${{ secrets.TWO_CAPTCHA_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
