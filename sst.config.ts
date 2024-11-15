@@ -24,6 +24,7 @@ export default $config({
     new sst.aws.Function("Hono", {
       handler: "src/index.handler",
       link: [LOOKUP_URL, TWO_CAPTCHA_API_KEY],
+      architecture: "arm64",
       timeout: "30 seconds",
       url: true,
     });
