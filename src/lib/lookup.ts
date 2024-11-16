@@ -1,9 +1,9 @@
 import puppeteer, { Browser } from "puppeteer";
 import { Resource } from "sst";
-import TwoCaptcha from "@2captcha/captcha-solver";
+import { Solver } from "@2captcha/captcha-solver";
 import { normaliseWhitespace } from "@/utils/normaliseWhitespace";
 
-const solver = new TwoCaptcha.Solver(Resource.TwoCaptchaApiKey.value);
+const solver = new Solver(Resource.TwoCaptchaApiKey.value);
 
 /**
  * Looks up vehicle information by plate number
