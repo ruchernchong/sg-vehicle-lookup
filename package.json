@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "sst dev --stage dev",
-    "test": "vitest --coverage"
+    "test": "vitest --coverage",
+    "postinstall": "puppeteer browsers install"
   },
   "keywords": [],
   "author": "Ru Chern Chong <hello@ruchern.dev>",
