@@ -31,7 +31,7 @@ export default $config({
       process.env.TWO_CAPTCHA_API_KEY,
     );
 
-    const api = new sst.aws.Function("Hono", {
+    const hono = new sst.aws.Function("Hono", {
       handler: "src/index.handler",
       link: [LOOKUP_URL, TWO_CAPTCHA_API_KEY],
       environment: {
@@ -44,16 +44,13 @@ export default $config({
       },
     });
 
-    new sst.aws.Router("API", {
+    new sst.aws.Router("SGVehicleLookupApi", {
       domain: {
         ...DOMAIN[$app.stage],
         dns: sst.cloudflare.dns(),
       },
       routes: {
-        "/*": api.url,
-      },
-      invalidation: {
-        wait: false,
+        "/*": hono.url,
       },
     });
   },

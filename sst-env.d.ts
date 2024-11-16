@@ -7,10 +7,6 @@ export {}
 import "sst"
 declare module "sst" {
   export interface Resource {
-    "API": {
-      "type": "sst.aws.Router"
-      "url": string
-    }
     "Hono": {
       "name": string
       "type": "sst.aws.Function"
@@ -19,6 +15,10 @@ declare module "sst" {
     "LookupUrl": {
       "type": "sst.sst.Secret"
       "value": string
+    }
+    "SGVehicleLookupApi": {
+      "type": "sst.aws.Router"
+      "url": string
     }
     "TwoCaptchaApiKey": {
       "type": "sst.sst.Secret"
