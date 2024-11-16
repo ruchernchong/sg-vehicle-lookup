@@ -7,6 +7,10 @@ export {}
 import "sst"
 declare module "sst" {
   export interface Resource {
+    "API": {
+      "type": "sst.aws.Router"
+      "url": string
+    }
     "Hono": {
       "name": string
       "type": "sst.aws.Function"

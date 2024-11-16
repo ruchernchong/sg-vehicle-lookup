@@ -1,5 +1,14 @@
 /// <reference path="./.sst/platform/config.d.ts" />
+
 import { ENV } from "@/config";
+
+const DOMAIN_NAME = "sgcarplatechecksum.app";
+
+const DOMAIN = {
+  dev: { name: `dev.api.${DOMAIN_NAME}` },
+  staging: { name: `staging.api.${DOMAIN_NAME}` },
+  prod: { name: `api.${DOMAIN_NAME}` },
+};
 
 export default $config({
   app(input) {
@@ -11,6 +20,7 @@ export default $config({
         aws: {
           region: "ap-southeast-1",
         },
+        cloudflare: true,
       },
     };
   },
@@ -21,12 +31,28 @@ export default $config({
       process.env.TWO_CAPTCHA_API_KEY,
     );
 
-    new sst.aws.Function("Hono", {
+    const api = new sst.aws.Function("Hono", {
       handler: "src/index.handler",
       link: [LOOKUP_URL, TWO_CAPTCHA_API_KEY],
       architecture: "arm64",
       timeout: "30 seconds",
       url: true,
+      nodejs: {
+        install: ["@sparticuz/chromium"],
+      },
+    });
+
+    new sst.aws.Router("API", {
+      domain: {
+        ...DOMAIN[$app.stage],
+        dns: sst.cloudflare.dns(),
+      },
+      routes: {
+        "/*": api.url,
+      },
+      invalidation: {
+        wait: false,
+      },
     });
   },
 });

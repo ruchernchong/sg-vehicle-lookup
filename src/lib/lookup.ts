@@ -1,4 +1,5 @@
-import puppeteer, { Browser } from "puppeteer";
+import puppeteer, { Browser } from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
 import { Resource } from "sst";
 import { Solver } from "@2captcha/captcha-solver";
 import { normaliseWhitespace } from "@/utils/normaliseWhitespace";
@@ -15,8 +16,17 @@ const solver = new Solver(Resource.TwoCaptchaApiKey.value);
 export const lookup = async (vehicleNumber: string) => {
   let browser: Browser | null = null;
 
+  process.env.PUPPETEER_CACHE_DIR = "/tmp/.puppeteer";
+
   try {
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: process.env.SST_DEV
+        ? "/tmp/localChromium/chromium/mac_arm-1383986/chrome-mac/Chromium.app/Contents/MacOS/Chromium"
+        : await chromium.executablePath(),
+      headless: chromium.headless,
+    });
 
     const page = await browser.newPage();
 
