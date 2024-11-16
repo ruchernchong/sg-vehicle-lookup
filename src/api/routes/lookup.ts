@@ -13,7 +13,6 @@ lookupRoutes.post("/:vehicleNo", zValidator("param", schema), async (c) => {
   if (hours >= 0 && hours < 6) {
     return c.json({
       message: "Service unavailable between 12 AM and 6 AM SGT.",
-      data: null,
     });
   }
 
