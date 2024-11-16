@@ -37,7 +37,6 @@ export default $config({
       environment: {
         TZ: "Asia/Singapore",
       },
-      architecture: "arm64",
       timeout: "30 seconds",
       url: true,
       nodejs: {
