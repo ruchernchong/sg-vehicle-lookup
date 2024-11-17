@@ -87,7 +87,7 @@ export const lookup = async (vehicleNumber: string) => {
       page.waitForNavigation({ waitUntil: "networkidle0" }),
     ]);
 
-    await page.waitForSelector(".dt-payment-dtls");
+    await page.waitForSelector(".dt-payment-dtls", { timeout: 0 });
 
     let model: string, expiryDate: string;
     model = await page.$eval(

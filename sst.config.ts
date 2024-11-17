@@ -37,7 +37,8 @@ export default $config({
       environment: {
         TZ: "Asia/Singapore",
       },
-      timeout: "30 seconds",
+      memory: "4096 MB",
+      timeout: "1 minute",
       url: true,
       nodejs: {
         install: ["@sparticuz/chromium"],
