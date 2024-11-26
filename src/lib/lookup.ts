@@ -23,15 +23,15 @@ export const lookup = async (vehicleNumber: string) => {
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
       executablePath: process.env.SST_DEV
-        ? "/tmp/localChromium/chromium/mac_arm-1383986/chrome-mac/Chromium.app/Contents/MacOS/Chromium"
+        ? "/tmp/localChromium/chrome/mac_arm-131.0.6778.85/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
         : await chromium.executablePath(),
       headless: chromium.headless,
     });
 
     const page = await browser.newPage();
 
-    const lookupUrl = Resource.LookupUrl.value;
-    await page.goto(lookupUrl, { waitUntil: "networkidle0" });
+    const lookupServiceUrl = Resource.LookupServiceUrl.value;
+    await page.goto(lookupServiceUrl, { waitUntil: "networkidle0" });
 
     await page.type("input[name='vehicleNo']", vehicleNumber);
     await page.click("input[name='agreeTC']");
@@ -48,7 +48,7 @@ export const lookup = async (vehicleNumber: string) => {
       console.log("Solving reCaptcha");
       const result = await solver.recaptcha({
         enterprise: 1,
-        pageurl: lookupUrl,
+        pageurl: lookupServiceUrl,
         googlekey: siteKey,
         version: "v3",
         min_score: 0.4,
