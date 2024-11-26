@@ -12,13 +12,9 @@ declare module "sst" {
       "type": "sst.aws.Function"
       "url": string
     }
-    "LookupUrl": {
+    "LookupServiceUrl": {
       "type": "sst.sst.Secret"
       "value": string
-    }
-    "SGVehicleLookupApi": {
-      "type": "sst.aws.Router"
-      "url": string
     }
     "TwoCaptchaApiKey": {
       "type": "sst.sst.Secret"
