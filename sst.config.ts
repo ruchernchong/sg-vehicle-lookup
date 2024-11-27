@@ -33,10 +33,14 @@ export default $config({
       "TwoCaptchaApiKey",
       process.env.TWO_CAPTCHA_API_KEY,
     );
+    const TWO_CAPTCHA_PROXY_URL = new sst.Secret(
+      "TwoCaptchaProxyUrl",
+      process.env.TWO_CAPTCHA_PROXY_URL,
+    );
 
     new sst.aws.Function("Hono", {
       handler: "src/index.handler",
-      link: [LOOKUP_SERVICE_URL, TWO_CAPTCHA_API_KEY],
+      link: [LOOKUP_SERVICE_URL, TWO_CAPTCHA_API_KEY, TWO_CAPTCHA_PROXY_URL],
       environment: {
         TZ: "Asia/Singapore",
         TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
@@ -47,7 +51,7 @@ export default $config({
         QSTASH_NEXT_SIGNING_KEY: process.env.QSTASH_NEXT_SIGNING_KEY,
         BACKGROUND_JOB_URL: process.env.BACKGROUND_JOB_URL,
       },
-      memory: "4096 MB",
+      memory: "10240 MB",
       timeout: "1 minute",
       url: true,
       nodejs: {
