@@ -26,9 +26,16 @@ export const lookup = async (vehicleNumber: string) => {
         ? "/tmp/localChromium/chrome/mac_arm-131.0.6778.85/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
         : await chromium.executablePath(),
       headless: chromium.headless,
+      dumpio: true,
     });
 
     const page = await browser.newPage();
+    page.on("request", (req) => {
+      console.log("Request:", req.url(), req.postData());
+    });
+    page.on("response", (res) => {
+      console.log("Response:", res.url(), res.status());
+    });
 
     const lookupServiceUrl = Resource.LookupServiceUrl.value;
     await page.goto(lookupServiceUrl, { waitUntil: "networkidle0" });
@@ -55,7 +62,12 @@ export const lookup = async (vehicleNumber: string) => {
         action,
       });
 
+      if (!result.data) {
+        throw new Error("Failed to solve reCAPTCHA");
+      }
+
       if (result) {
+        console.log("reCaptcha Result:", result);
         await solver.goodReport(result.id);
         console.log("reCaptcha solved successfully.");
       }
@@ -75,28 +87,42 @@ export const lookup = async (vehicleNumber: string) => {
         (window as any).grecaptchaResponse = captchaResponse;
       }, result.data);
     } catch (e) {
-      console.error(e);
       await solver.badReport(e);
+      console.error(e);
     } finally {
       const balance = await solver.balance();
       console.log("2Captcha Balance", balance);
     }
+
+    await page.evaluate(() => {
+      const form = document.querySelector("form");
+      if (form) {
+        console.log("Form action:", form.action);
+        console.log("Form data:", new FormData(form));
+      }
+    });
 
     await Promise.all([
       page.click("#btnNext"),
       page.waitForNavigation({ waitUntil: "networkidle0" }),
     ]);
 
-    await page.waitForSelector(".dt-payment-dtls", { timeout: 0 });
+    const error = await page.$eval(
+      ".dt-error-msg-list",
+      ({ textContent }) => textContent,
+    );
+    console.log(error);
+
+    await page.waitForSelector(".dt-payment-dtls");
 
     let model: string, expiryDate: string;
     model = await page.$eval(
       ".dt-payment-dtls div.col-xs-5 div > p",
-      (element) => element.textContent,
+      ({ textContent }) => textContent,
     );
     expiryDate = await page.$eval(
       "p.vrlDT-content-p",
-      (element) => element.textContent,
+      ({ textContent }) => textContent,
     );
 
     if (!model || !expiryDate) return;

@@ -12,6 +12,7 @@ lookupRoutes.post("/", async (c) => {
   const response = await qstash.publishJSON({
     url: `${process.env.BACKGROUND_JOB_URL}/lookup/process`,
     body: update,
+    retries: 0,
   });
 
   console.log(response);
@@ -89,7 +90,10 @@ lookupRoutes.post("/process", async (c) => {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: `Error occurred while looking up vehicle details for ${vehicleNo}`,
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: `Error occurred while looking up vehicle details for ${vehicleNo}`,
+        }),
       },
     );
     return c.json({ message: e.message }, 500);
