@@ -20,5 +20,9 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "TwoCaptchaProxyUrl": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
   }
 }
