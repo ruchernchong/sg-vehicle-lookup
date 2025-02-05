@@ -1,4 +1,4 @@
-name: Deployment (Prod)
+name: Deployment (Production)
 on:
   push:
     tags:
@@ -18,8 +18,16 @@ jobs:
     environment: Production
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      LOOKUP_URL: ${{ secrets.LOOKUP_URL }}
+      LOOKUP_SERVICE_URL: ${{ secrets.LOOKUP_SERVICE_URL }}
       TWO_CAPTCHA_API_KEY: ${{ secrets.TWO_CAPTCHA_API_KEY }}
+      TWO_CAPTCHA_PROXY_URL: ${{ secrets.TWO_CAPTCHA_PROXY_URL }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+      UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+      QSTASH_TOKEN: ${{ secrets.QSTASH_TOKEN }}
+      QSTASH_CURRENT_SIGNING_KEY: ${{ secrets.QSTASH_CURRENT_SIGNING_KEY }}
+      QSTASH_NEXT_SIGNING_KEY: ${{ secrets.QSTASH_NEXT_SIGNING_KEY }}
+      BACKGROUND_JOB_URL: ${{ vars.BACKGROUND_JOB_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

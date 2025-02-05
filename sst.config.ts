@@ -25,33 +25,37 @@ export default $config({
     };
   },
   async run() {
-    const LOOKUP_URL = new sst.Secret("LookupUrl", process.env.LOOKUP_URL);
+    const LOOKUP_SERVICE_URL = new sst.Secret(
+      "LookupServiceUrl",
+      process.env.LOOKUP_SERVICE_URL,
+    );
     const TWO_CAPTCHA_API_KEY = new sst.Secret(
       "TwoCaptchaApiKey",
       process.env.TWO_CAPTCHA_API_KEY,
     );
+    const TWO_CAPTCHA_PROXY_URL = new sst.Secret(
+      "TwoCaptchaProxyUrl",
+      process.env.TWO_CAPTCHA_PROXY_URL,
+    );
 
-    const hono = new sst.aws.Function("Hono", {
+    new sst.aws.Function("Hono", {
       handler: "src/index.handler",
-      link: [LOOKUP_URL, TWO_CAPTCHA_API_KEY],
+      link: [LOOKUP_SERVICE_URL, TWO_CAPTCHA_API_KEY, TWO_CAPTCHA_PROXY_URL],
       environment: {
         TZ: "Asia/Singapore",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
+        UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+        UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+        QSTASH_TOKEN: process.env.QSTASH_TOKEN,
+        QSTASH_CURRENT_SIGNING_KEY: process.env.QSTASH_CURRENT_SIGNING_KEY,
+        QSTASH_NEXT_SIGNING_KEY: process.env.QSTASH_NEXT_SIGNING_KEY,
+        BACKGROUND_JOB_URL: process.env.BACKGROUND_JOB_URL,
       },
-      memory: "4096 MB",
+      memory: "10240 MB",
       timeout: "1 minute",
       url: true,
       nodejs: {
         install: ["@sparticuz/chromium"],
-      },
-    });
-
-    new sst.aws.Router("SGVehicleLookupApi", {
-      domain: {
-        ...DOMAIN[$app.stage],
-        dns: sst.cloudflare.dns(),
-      },
-      routes: {
-        "/*": hono.url,
       },
     });
   },
